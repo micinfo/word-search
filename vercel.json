@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm install && npm run build:shared && cd packages/memorygamev2 && npm run build",
+  "buildCommand": "npm install && npm run build:shared && cd packages/memorygame && npm run build",
   "installCommand": "npm install",
-  "outputDirectory": "packages/memorygamev2/build",
+  "outputDirectory": "packages/memorygame/build",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

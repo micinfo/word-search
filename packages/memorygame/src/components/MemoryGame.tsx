@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface Card {
   id: number;
@@ -14,7 +14,8 @@ const MemoryGame: React.FC = () => {
   const [moves, setMoves] = useState(0);
   const [currentGame, setCurrentGame] = useState(1);
   const [showNextGamePrompt, setShowNextGamePrompt] = useState(false);
-
+  const [isSoundEnabled, setIsSoundEnabled] = useState(false);
+  const bgMusicRef = useRef<HTMLAudioElement | null>(null);
   const level1Cards = [
     { name: "Adrylex", content: "/images/logos/Adrylex.png" },
     { name: "Ceraklin", content: "/images/logos/Ceraklin_logo.png" },
@@ -24,17 +25,45 @@ const MemoryGame: React.FC = () => {
     { name: "Nadixa", content: "/images/logos/Nadixa.png" },
   ];
 
-  const level2Cards = [
-    { name: "Cozin1mg", content: "/images/logos/Cozin1mg.png" },
-    { name: "Cerkalin", content: "/images/logos/Cerkalin.png" },
-    { name: "NovasLogo", content: "/images/logos/NovasLogo.png" },
-    { name: "DefunginLogo", content: "/images/logos/DefunginLogo.png" },
-    { name: "Cortizan2", content: "/images/logos/Cortizan2.png" },
-  ];
-
   useEffect(() => {
-    initializeGame();
-  }, [currentGame]);
+    bgMusicRef.current = new Audio("/sounds/background-music.wav");
+    if (bgMusicRef.current) {
+      bgMusicRef.current.loop = true;
+    }
+    return () => {
+      if (bgMusicRef.current) {
+        bgMusicRef.current.pause();
+        bgMusicRef.current.currentTime = 0;
+      }
+    };
+  }, []);
+
+  const toggleSound = () => {
+    if (!bgMusicRef.current) return;
+
+    if (isSoundEnabled) {
+      bgMusicRef.current.pause();
+      bgMusicRef.current.currentTime = 0;
+    } else {
+      bgMusicRef.current.play().catch(() => {
+        // Handle any autoplay errors silently
+      });
+    }
+    setIsSoundEnabled(!isSoundEnabled);
+  };
+
+  const playSound = (soundFile: string) => {
+    if (!isSoundEnabled) return;
+
+    try {
+      const audio = new Audio(soundFile);
+      audio.play().catch(() => {
+        // Handle any play errors silently
+      });
+    } catch (error) {
+      // Handle any audio creation errors silently
+    }
+  };
 
   const initializeGame = () => {
     // const currentCards = currentGame === 1 ? level1Cards : level2Cards;
@@ -83,7 +112,7 @@ const MemoryGame: React.FC = () => {
     ) {
       return;
     }
-
+    playSound("/sounds/card-flip.wav");
     const newFlippedCards = [...flippedCards, id];
     setFlippedCards(newFlippedCards);
     setMoves((prev) => prev + 1);
@@ -142,6 +171,9 @@ const MemoryGame: React.FC = () => {
           wins.
         </h2>
         <p>Moves: {moves}</p>
+        <button onClick={toggleSound} className="sound-button">
+          {isSoundEnabled ? "Sound: On 🔊" : "Sound: Off 🔇"}
+        </button>
         <button onClick={initializeGame}>New Game</button>
       </div>
       {showNextGamePrompt ? (
