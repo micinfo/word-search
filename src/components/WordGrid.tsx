@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Position {
   row: number;
@@ -27,7 +27,11 @@ interface Timer {
 }
 
 // Add new state variables in the component
-const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) => {
+const WordGrid: React.FC<WordGridProps> = ({
+  words,
+  onWordFound,
+  hintedWord,
+}) => {
   const gridSize = 15;
   const [grid, setGrid] = useState<Cell[][]>(createEmptyGrid());
   const [selection, setSelection] = useState<Position[]>([]);
@@ -37,19 +41,29 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
   const [initializedGrid, setInitializedGrid] = useState<Cell[][]>([]);
 
   function createEmptyGrid(): Cell[][] {
-    return Array(gridSize).fill(null).map(() =>
-      Array(gridSize).fill(null).map(() => ({
-        letter: '',
-        selected: false,
-        isPartOfHint: false,
-        wordIndex: undefined
-      }))
-    );
+    return Array(gridSize)
+      .fill(null)
+      .map(() =>
+        Array(gridSize)
+          .fill(null)
+          .map(() => ({
+            letter: "",
+            selected: false,
+            isPartOfHint: false,
+            wordIndex: undefined,
+          }))
+      );
   }
 
   const directions = [
-    [1, 0], [0, 1], [1, 1], [-1, 1],
-    [-1, 0], [0, -1], [-1, -1], [1, -1]
+    [1, 0],
+    [0, 1],
+    [1, 1],
+    [-1, 1],
+    [-1, 0],
+    [0, -1],
+    [-1, -1],
+    [1, -1],
   ];
 
   // Update useEffect for grid initialization
@@ -61,12 +75,12 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
       while (attempts < maxAttempts) {
         const newGrid = createEmptyGrid();
         const placedWords: string[] = [];
-        
+
         // Process and shuffle words
         const processedWords = [...words]
-          .map(word => ({
+          .map((word) => ({
             original: word,
-            processed: word.replace(/[^A-Za-z]/g, '').toUpperCase()
+            processed: word.replace(/[^A-Za-z]/g, "").toUpperCase(),
           }))
           .sort(() => Math.random() - 0.5)
           .sort((a, b) => b.processed.length - a.processed.length);
@@ -74,20 +88,28 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
         let allWordsPlaced = true;
 
         // Try to place each word
-        for (let wordIndex = 0; wordIndex < processedWords.length; wordIndex++) {
+        for (
+          let wordIndex = 0;
+          wordIndex < processedWords.length;
+          wordIndex++
+        ) {
           const { processed: word, original } = processedWords[wordIndex];
           let isPlaced = false;
 
           // Shuffle directions for each word
-          const shuffledDirections = [...directions].sort(() => Math.random() - 0.5);
+          const shuffledDirections = [...directions].sort(
+            () => Math.random() - 0.5
+          );
 
           // Try each direction
           for (const [dx, dy] of shuffledDirections) {
             if (isPlaced) break;
 
             // Calculate valid range for this word
-            const maxX = dx === 0 ? gridSize : dx > 0 ? gridSize - word.length : gridSize;
-            const maxY = dy === 0 ? gridSize : dy > 0 ? gridSize - word.length : gridSize;
+            const maxX =
+              dx === 0 ? gridSize : dx > 0 ? gridSize - word.length : gridSize;
+            const maxY =
+              dy === 0 ? gridSize : dy > 0 ? gridSize - word.length : gridSize;
             const minX = dx < 0 ? word.length - 1 : 0;
             const minY = dy < 0 ? word.length - 1 : 0;
 
@@ -99,10 +121,15 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
 
                 // Check if word fits
                 for (let i = 0; i < word.length && canPlace; i++) {
-                  const newX = x + (dx * i);
-                  const newY = y + (dy * i);
-                  
-                  if (newX < 0 || newX >= gridSize || newY < 0 || newY >= gridSize) {
+                  const newX = x + dx * i;
+                  const newY = y + dy * i;
+
+                  if (
+                    newX < 0 ||
+                    newX >= gridSize ||
+                    newY < 0 ||
+                    newY >= gridSize
+                  ) {
                     canPlace = false;
                     break;
                   }
@@ -122,7 +149,7 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
                       letter: word[i],
                       selected: false,
                       isPartOfHint: false,
-                      wordIndex: wordIndex
+                      wordIndex: wordIndex,
                     };
                   });
                   isPlaced = true;
@@ -143,7 +170,9 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
           for (let y = 0; y < gridSize; y++) {
             for (let x = 0; x < gridSize; x++) {
               if (!newGrid[y][x].letter) {
-                newGrid[y][x].letter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+                newGrid[y][x].letter = String.fromCharCode(
+                  65 + Math.floor(Math.random() * 26)
+                );
               }
             }
           }
@@ -167,8 +196,8 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
   useEffect(() => {
     if (initializedGrid.length > 0) {
       const updatedGrid = JSON.parse(JSON.stringify(initializedGrid));
-      foundPositions.forEach(positions => {
-        positions.forEach(pos => {
+      foundPositions.forEach((positions) => {
+        positions.forEach((pos) => {
           if (updatedGrid[pos.row] && updatedGrid[pos.row][pos.col]) {
             updatedGrid[pos.row][pos.col].found = true;
             updatedGrid[pos.row][pos.col].selected = true;
@@ -179,9 +208,13 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
     }
   }, [foundPositions, initializedGrid]);
 
+  // Add state for celebration
+  const [showCelebration, setShowCelebration] = useState(false);
+
+  // Modify handleCellClick to check for game completion
   const handleCellClick = (rowIndex: number, colIndex: number) => {
     const isAlreadySelected = selection.some(
-      pos => pos.row === rowIndex && pos.col === colIndex
+      (pos) => pos.row === rowIndex && pos.col === colIndex
     );
 
     if (isAlreadySelected) {
@@ -217,9 +250,30 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
     }
   };
 
+  // Add celebration overlay to the render
   return (
     <div className="word-grid">
       <ToastContainer />
+      {showCelebration && (
+        <div className="celebration-overlay">
+          <div className="celebration-text">
+            Congratulations!
+            <br />
+            You found all words!
+          </div>
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              className="confetti"
+              style={{
+                left: `${Math.random() * 100}%`,
+                backgroundColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            />
+          ))}
+        </div>
+      )}
       <div className="grid-container">
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} className="grid-row">
