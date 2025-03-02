@@ -2,7 +2,11 @@
   text-align: center;
   padding: 20px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background: linear-gradient(135deg, #6a3fb5, #9370DB);
+  background-image: url('../src/images/background-image.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: white;
   display: flex;
   flex-direction: column;
@@ -14,11 +18,116 @@
   justify-content: center;
   align-items: flex-start;
   gap: 40px;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 1200px;
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.product-name {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;  /* Changed to grey */
+}
+
+.brand-name {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;  /* Changed to grey */
+}
+
+.title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;  /* Changed to grey */
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #2c3e50;  /* Changed to grey */
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+}
+
+.footer h3 {
+  line-height: 1.5;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.footer .highlight {
+  color: #4834b8;
+  font-weight: bold;
+}
+.footer {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  color: #333333;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+}
+
+.footer h3 {
+  line-height: 1.5;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.footer .highlight {
+  color: #4834b8;
+  font-weight: bold;
+}
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
   margin-top: 20px;
   width: 100%;
   max-width: 1200px;
   padding: 0 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 30px;
+  margin: 20px 0;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 3px;
+  width: 100%;
+  position: relative;
+  isolation: isolate;
+}
+
+
+.footer {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  color: #333333;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+}
+
 
 .word-grid {
   background: rgba(255, 255, 255, 0.95);
@@ -91,31 +200,16 @@
   background: rgba(255, 255, 255, 0.95);
   padding: 25px;
   border-radius: 15px;
-  width: 250px;
+  width: 300px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
-  .game-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .word-list {
-    width: 100%;
-    max-width: 800px;
-  }
-
-  .grid-cell {
-    font-size: clamp(12px, 4vw, 18px);
-  }
-}
-
 .word-list h3 {
-  font-size: 24px;
+  font-size: 28px;
   color: #2c3e50;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   text-align: center;
+  font-weight: bold;
 }
 
 .word-list ul {
@@ -124,14 +218,40 @@
 }
 
 .word-list li {
-  margin: 12px 0;
-  font-size: 20px;
+  margin: 20px 0;
+  font-size: 1.4rem;
+  letter-spacing: 2px;  /* Reduced from 4px */
   font-weight: 500;
-  color: #34495e;
-  padding: 10px 15px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  color: #2c3e50;
+  padding: 20px;
+  border-radius: 12px;
   background: #f8f9fa;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.word-list {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px;
+  border-radius: 15px;
+  width: 280px;  /* Adjusted to fit the content better */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.word-list li span.points {
+  letter-spacing: normal;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.pattern {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 5px;
+  font-style: italic;
 }
 
 .word-list li.found {
@@ -179,10 +299,38 @@
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
   }
 }
-.grid-cell.found-word-1 {
+.grid-cell.found {
   background-color: #98FB98;
   color: #006400;
   transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 100, 0, 0.3);
+  z-index: 2;
+}
+
+.grid-cell.found:hover {
+  background-color: #98FB98;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.grid-cell.found.selected {
+  background-color: #2196f3;
+  color: white;
+}
+
+/* Remove conflicting styles */
+.grid-cell.found-word-1,
+.grid-cell.found-word-2,
+.grid-cell.found-word-3,
+.grid-cell.found-word-4,
+.grid-cell.found-word-5 {
+  display: none; /* Remove these styles as they might interfere */
+}
+
+.grid-cell.found:hover {
+  background-color: #98FB98;
+  transform: scale(1.05);
+  pointer-events: none;
 }
 
 .grid-cell.found-word-2 {
@@ -207,4 +355,222 @@
   background-color: #F0E68C;
   color: #8B4513;
   transform: scale(1.05);
+}
+.game-stats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.score-display {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.progress {
+  font-size: 1.5rem;
+  color: #2c3e50;
+}
+
+.word-list li.found {
+  text-decoration: line-through;
+  color: #4834b8;
+  opacity: 0.6;
+}
+.word-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.word-wrap span {
+  letter-spacing: 2px;
+}
+@media (max-width: 768px) {
+  .App {
+    padding: 10px 5px;
+    width: 100%;
+  }
+
+  .game-container {
+    flex-direction: column;
+    padding: 10px;
+    gap: 15px;
+    margin: 5px 0;
+    width: 95%;
+  }
+
+  .word-grid {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2px;
+    padding: 5px;
+  }
+
+  .grid-cell {
+    font-size: clamp(10px, 2.8vw, 14px);
+    border-width: 1px;
+    border-radius: 4px;
+    padding: 2px;
+    transition: background-color 0.3s ease;
+  }
+
+  .word-list {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+  }
+
+  .word-list li {
+    font-size: 1rem;
+    padding: 8px;
+    margin: 5px 0;
+  }
+
+  .game-stats {
+    width: 95%;
+    padding: 10px;
+    margin: 10px auto;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .score-display, .progress {
+    font-size: 1.2rem;
+  }
+
+  .product-name {
+    font-size: 1.5rem;
+  }
+
+  .brand-name, .title {
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    padding: 10px;
+    width: 95%;
+  }
+}
+
+@media (max-width: 430px) {
+  .App {
+    padding: 5px;
+    width: 100%;
+    max-width: 430px;
+    background-image: none;
+    background: linear-gradient(135deg, #6a3fb5, #9370DB);
+  }
+
+  .game-container {
+    flex-direction: column;
+    padding: 8px;
+    gap: 10px;
+    margin: 5px auto;
+    width: 98%;
+  }
+
+  .word-grid {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1px;
+    padding: 2px;
+  }
+
+  .grid-cell {
+    aspect-ratio: 1;
+    font-size: clamp(8px, 2.5vw, 12px);
+    border-width: 1px;
+    border-radius: 3px;
+    padding: 0;
+  }
+
+  .word-list {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+  }
+
+  .word-list li {
+    font-size: 0.9rem;
+    padding: 6px;
+    margin: 4px 0;
+  }
+
+  .game-stats {
+    width: 98%;
+    padding: 8px;
+    margin: 8px auto;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .score-display, .progress {
+    font-size: 1rem;
+  }
+
+  .product-name {
+    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .brand-name, .title {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+    padding: 8px;
+    width: 98%;
+    margin: 5px auto;
+  }
+
+  .footer {
+    padding: 8px;
+    margin: 8px auto;
+    width: 98%;
+  }
+
+  .footer h3 {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .game-container {
+    padding: 20px;
+    gap: 25px;
+    width: 95%;
+  }
+
+  .word-list {
+    width: 280px;
+  }
+
+  .grid-cell {
+    font-size: clamp(14px, 1.5vw, 18px);
+  }
+}
+
+/* Add smooth transitions */
+.grid-cell, .word-list li, .game-stats {
+  transition: all 0.3s ease;
 }
