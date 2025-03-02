@@ -1,0 +1,66 @@
+.word-grid {
+  padding: 20px;
+}
+
+.grid-container {
+  display: grid;
+  gap: 2px;
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.grid-cell {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.grid-cell:hover {
+  transform: scale(1.1);
+  background: #e8f4ff;
+}
+
+.grid-cell.selected {
+  background: #4a90e2;
+  color: white;
+  animation: pulse 0.5s ease;
+}
+
+.grid-cell.incorrect {
+  background: #ff4d4d;
+  color: white;
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.grid-cell.found {
+  background: #47b881;
+  color: white;
+  animation: celebrate 0.7s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes celebrate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2) rotate(10deg); }
+  100% { transform: scale(1) rotate(0); }
+}

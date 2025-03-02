@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,6 +21,12 @@ interface WordGridProps {
 }
 
 // Increase grid size to accommodate longer words
+interface Timer {
+  minutes: number;
+  seconds: number;
+}
+
+// Add new state variables in the component
 const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) => {
   const gridSize = 15;
   const [grid, setGrid] = useState<Cell[][]>(createEmptyGrid());
@@ -174,13 +180,11 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
   }, [foundPositions, initializedGrid]);
 
   const handleCellClick = (rowIndex: number, colIndex: number) => {
-    // Only prevent selecting the same cell twice in current selection
     const isAlreadySelected = selection.some(
       pos => pos.row === rowIndex && pos.col === colIndex
     );
 
     if (isAlreadySelected) {
-      // Clear selection if clicking an already selected cell
       setSelection([]);
       return;
     }
@@ -227,14 +231,6 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
                     (pos) => pos.row === rowIndex && pos.col === colIndex
                   )
                     ? "selected"
-                    : ""
-                } ${
-                  foundPositions.some((positions) =>
-                    positions.some(
-                      (pos) => pos.row === rowIndex && pos.col === colIndex
-                    )
-                  )
-                    ? "found"
                     : ""
                 }`}
                 onClick={() => handleCellClick(rowIndex, colIndex)}
