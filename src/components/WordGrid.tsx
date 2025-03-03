@@ -210,8 +210,8 @@ const WordGrid: React.FC<WordGridProps> = ({
 
   // Add state for celebration
   const [showCelebration, setShowCelebration] = useState(false);
+  const [showFinalCelebration, setShowFinalCelebration] = useState(false);
 
-  // Modify handleCellClick to check for game completion
   const handleCellClick = (rowIndex: number, colIndex: number) => {
     const isAlreadySelected = selection.some(
       (pos) => pos.row === rowIndex && pos.col === colIndex
@@ -245,15 +245,39 @@ const WordGrid: React.FC<WordGridProps> = ({
       onWordFound(foundWord);
       setFoundPositions((prev) => [...prev, newSelection]);
       setSelection([]);
-    } else if (newSelection.length >= 15) {
-      setSelection([]);
+
+      // Check if all words are found
+      if (foundPositions.length + 1 === words.length) {
+        setShowFinalCelebration(true);
+        setTimeout(() => setShowFinalCelebration(false), 5000);
+      }
     }
   };
 
-  // Add celebration overlay to the render
   return (
     <div className="word-grid">
       <ToastContainer />
+      {showFinalCelebration && (
+        <div className="final-celebration-overlay">
+          <div className="final-celebration-content">
+            <h2>🎉 Congratulations! 🎉</h2>
+            <p>You've found all the words!</p>
+            <div className="final-score">Final Score: {words.length * 100}</div>
+            <button onClick={() => setShowFinalCelebration(false)}>Close</button>
+          </div>
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              className="confetti"
+              style={{
+                left: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+                backgroundColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
+              }}
+            />
+          ))}
+        </div>
+      )}
       {showCelebration && (
         <div className="celebration-overlay">
           <div className="celebration-text">

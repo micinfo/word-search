@@ -21,10 +21,19 @@
   margin: 20px 0;
   width: 100%;
   max-width: 1200px;
-  padding: 30px 20px;
+  padding: 30px;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 3px;
+  width: 100%;
+  position: relative;
+  isolation: isolate;
 }
 
 .product-name {
