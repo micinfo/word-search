@@ -13,6 +13,13 @@
   align-items: center;
 }
 
+.product-name-span {
+  /* background-color: #4834b8; */
+  border: 1px solid #fff;
+  padding: 10px;
+  /* color: #4834b8; */
+}
+
 .game-container {
   display: flex;
   justify-content: center;
@@ -191,7 +198,7 @@
   background: white;
   padding: 15px;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
 }
 
@@ -497,47 +504,91 @@
 }
 
 /* Add these styles for the celebration message */
-.celebration-message {
+.celebration-overlay {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.95);
-  padding: 20px 40px;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1000;
-  animation: popIn 0.5s ease-out;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.celebration-message {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: celebrateIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  color: gray;
 }
 
 .celebration-message h2 {
   color: #4834b8;
-  font-size: 24px;
-  margin-bottom: 10px;
+  font-size: 2rem;
+  margin-bottom: 15px;
+  animation: rainbow 3s infinite;
 }
 
-.remaining-words {
-  color: #2c3e50;
-  font-size: 1.2rem;
+.celebration-button {
+  margin-top: 20px;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  background: linear-gradient(45deg, #4834b8, #6a3fb5);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-@keyframes popIn {
-  0% {
-    transform: translate(-50%, -50%) scale(0.5);
+.celebration-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(74, 52, 184, 0.4);
+}
+
+.word-found-notification {
+  position: fixed;
+  top: 80px; /* Changed from 20px to avoid overlap */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #27ae60;
+  font-size: 1.1rem;
+  animation: slideIn 0.5s ease-out;
+  z-index: 1001; /* Increased z-index */
+  text-align: center;
+  min-width: 200px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translate(-50%, -100%);
     opacity: 0;
   }
-  70% {
-    transform: translate(-50%, -50%) scale(1.1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
+  to {
+    transform: translate(-50%, 0);
     opacity: 1;
   }
 }
 
-/* Update the found word style */
-.word-list li.found {
+/* Update media query for mobile */
+@media (max-width: 768px) {
+  .word-found-notification {
+    top: 60px; /* Adjusted for mobile */
+    width: 90%;
+    max-width: 300px;
+  }
+}
+*/ Update the found word style */ .word-list li.found {
   text-decoration: line-through;
   background-color: #e8f5e9;
   color: #27ae60;
