@@ -1,16 +1,29 @@
 import React, { useState } from "react";
 import "./App.css";
-import WordGrid from "./components/WordGrid";
-import WordList from "./components/WordList";
+import { WordGrid, WordList, GameConfig } from "@word-search/shared";
 
-const App: React.FC = () => {
-  const words = [
+const gameConfig: GameConfig = {
+  productName: "LEVODROPROPIZINE",
+  brandName: "LEVOPRONT®",
+  title: "LEVOPRONT® ADVANTAGE WORD SEARCH",
+  subtitle:
+    "Search one word that defines the advantage of Levopront® over other cough suppressants",
+  words: [
     "LEVOPRONT",
     "FOREFRONT",
     "EFFECTIVERELIEF",
     "COUGH",
     "LICORICEFLAVOR",
-  ];
+  ],
+  theme: {
+    primary: "#4834b8",
+    secondary: "#6a3fb5",
+    accent: "#27ae60",
+  },
+};
+
+const App: React.FC = () => {
+  const { words, productName, brandName, title, subtitle, theme } = gameConfig;
 
   const [foundWords, setFoundWords] = useState<string[]>([]);
   const [foundPatterns, setFoundPatterns] = useState<{ [key: string]: string }>(
@@ -38,7 +51,16 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="App">
+    <div
+      className="App"
+      style={
+        {
+          "--primary-color": theme?.primary,
+          "--secondary-color": theme?.secondary,
+          "--accent-color": theme?.accent,
+        } as React.CSSProperties
+      }
+    >
       {showCelebration && (
         <div className="celebration-overlay">
           <div className="celebration-message">
@@ -56,14 +78,11 @@ const App: React.FC = () => {
       )}
       <header>
         <h1 className="product-name">
-          <span className="product-name-span">LEVODROPROPIZINE</span>
+          <span className="product-name-span">{productName}</span>
         </h1>
-        <h2 className="brand-name">LEVOPRONT®</h2>
-        <h2 className="title">LEVOPRONT® ADVANTAGE WORD SEARCH</h2>
-        <p className="subtitle">
-          Search one word that defines the advantage of Levopront® over other
-          cough suppressants
-        </p>
+        <h2 className="brand-name">{brandName}</h2>
+        <h2 className="title">{title}</h2>
+        <p className="subtitle">{subtitle}</p>
       </header>
 
       <div className="game-stats">

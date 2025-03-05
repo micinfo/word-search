@@ -6,6 +6,8 @@
   ],
   "scripts": {
     "start:levopront": "cd packages/levopront && npm start",
-    "build:levopront": "cd packages/levopront && npm run build"
+    "build:levopront": "cd packages/levopront && npm run build",
+    "start:kcab": "cd packages/kcab && npm start",
+    "build:kcab": "cd packages/kcab && npm run build"
   }
 }

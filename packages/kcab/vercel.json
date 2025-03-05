@@ -1,0 +1,7 @@
+{
+    "name": "levopront-word-search",
+    "buildCommand": "cd ../.. && npm install && npm run build:levopront",
+    "outputDirectory": "packages/levopront/build",
+    "installCommand": "npm install",
+    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  }
