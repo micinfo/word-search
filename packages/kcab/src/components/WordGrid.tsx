@@ -27,11 +27,7 @@ interface Timer {
 }
 
 // Add new state variables in the component
-const WordGrid: React.FC<WordGridProps> = ({
-  words,
-  onWordFound,
-  hintedWord,
-}) => {
+const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) => {
   const gridSize = 15;
   const [grid, setGrid] = useState<Cell[][]>(createEmptyGrid());
   const [selection, setSelection] = useState<Position[]>([]);
@@ -246,7 +242,6 @@ const WordGrid: React.FC<WordGridProps> = ({
       setFoundPositions((prev) => [...prev, newSelection]);
       setSelection([]);
 
-      // Check if all words are found
       if (foundPositions.length + 1 === words.length) {
         setShowFinalCelebration(true);
         setTimeout(() => setShowFinalCelebration(false), 5000);
