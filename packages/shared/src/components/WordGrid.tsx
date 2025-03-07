@@ -52,15 +52,11 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
       );
   }
 
+  // Update directions to only include horizontal, vertical, and diagonal
   const directions = [
     [1, 0],   // horizontal right
     [0, 1],   // vertical down
     [1, 1],   // diagonal down-right
-    [-1, 1],  // diagonal down-left
-    [-1, 0],  // horizontal left
-    [0, -1],  // vertical up
-    [-1, -1], // diagonal up-left
-    [1, -1]   // diagonal up-right
   ];
 
   useEffect(() => {
@@ -72,7 +68,7 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
         const newGrid = createEmptyGrid();
         const placedWords: string[] = [];
 
-        // Sort words by length (longest first) to ensure better placement
+        // Process words in a consistent order
         const processedWords = [...words]
           .sort((a, b) => b.length - a.length)
           .map(word => ({
@@ -82,16 +78,13 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
 
         let allWordsPlaced = true;
 
-        // Try to place each word with more space between words
+        // Try to place each word with more consistent spacing
         for (let wordIndex = 0; wordIndex < processedWords.length; wordIndex++) {
           const { processed: word } = processedWords[wordIndex];
           let isPlaced = false;
 
-          // Shuffle directions for more random placement
-          const shuffledDirections = [...directions].sort(() => Math.random() - 0.5);
-
-          // Try each direction
-          for (const [dx, dy] of shuffledDirections) {
+          // Try each direction in sequence (no random shuffling)
+          for (const [dx, dy] of directions) {
             if (isPlaced) break;
 
             // Calculate valid range for this word
@@ -197,17 +190,49 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
   const [showCelebration, setShowCelebration] = useState(false);
   const [showFinalCelebration, setShowFinalCelebration] = useState(false);
 
-  const handleCellClick = (rowIndex: number, colIndex: number) => {
-    const isAlreadySelected = selection.some(
-      (pos) => pos.row === rowIndex && pos.col === colIndex
+  const isValidDirection = (start: Position, end: Position): boolean => {
+    const dx = end.col - start.col;
+    const dy = end.row - start.row;
+    
+    // Check if movement is horizontal, vertical, or diagonal
+    return (
+      dx === 0 || // vertical
+      dy === 0 || // horizontal
+      Math.abs(dx) === Math.abs(dy) // diagonal
     );
+  };
 
-    if (isAlreadySelected) {
+  const getPositionsInLine = (start: Position, end: Position): Position[] => {
+    const positions: Position[] = [];
+    const dx = Math.sign(end.col - start.col);
+    const dy = Math.sign(end.row - start.row);
+    let current = { ...start };
+
+    while (current.row !== end.row || current.col !== end.col) {
+      positions.push({ ...current });
+      current.row += dy;
+      current.col += dx;
+    }
+    positions.push(end);
+
+    return positions;
+  };
+
+  const handleCellClick = (rowIndex: number, colIndex: number) => {
+    if (selection.length === 0) {
+      setSelection([{ row: rowIndex, col: colIndex }]);
+      return;
+    }
+
+    const start = selection[0];
+    const end = { row: rowIndex, col: colIndex };
+
+    if (!isValidDirection(start, end)) {
       setSelection([]);
       return;
     }
 
-    const newSelection = [...selection, { row: rowIndex, col: colIndex }];
+    const newSelection = getPositionsInLine(start, end);
     setSelection(newSelection);
 
     const selectedWord = newSelection
