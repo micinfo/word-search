@@ -173,29 +173,34 @@
   background: rgba(255, 255, 255, 0.95);
   padding: 25px;
   border-radius: 15px;
-  width: 96%;
+  width: 300px; /* Fixed width */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .word-list ul {
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-direction: column; /* Changed to column */
+  align-items: center;
+  gap: 10px;
 }
 
 .word-list li {
-  margin: 20px 0;
+  width: 100%; /* Full width of container */
+  margin: 5px 0;
   font-size: 1.4rem;
   letter-spacing: 2px;
   font-weight: 500;
   color: #2c3e50;
-  padding: 20px;
+  padding: 1px;
   border-radius: 12px;
-  background: #f8f9fa;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+}
+
+/* Remove conflicting styles */
+.word-list ul {
+  flex-wrap: nowrap; /* Remove wrap */
 }
 
 .word-list li.found {
@@ -240,6 +245,7 @@
 }
 
 /* Update game-container to ensure full width */
+/* Update game-container to use flex-row */
 .game-container {
   background-color: #6ba5b8;
   border-radius: 15px;
@@ -248,8 +254,34 @@
   width: 100%;
   max-width: 1200px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Changed from column to row */
   gap: 2rem;
+  align-items: flex-start; /* Added to align items at the top */
+}
+
+/* Adjust word-grid and word-list widths */
+.word-grid {
+  flex: 2; /* Takes up 2/3 of the space */
+  min-width: 0; /* Prevents flex item from overflowing */
+}
+
+.word-list {
+  flex: 1; /* Takes up 1/3 of the space */
+  align-self: stretch; /* Stretches to match grid height */
+}
+
+/* Update mobile styles */
+@media (max-width: 768px) {
+  .game-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .word-grid,
+  .word-list {
+    width: 100%;
+    flex: none;
+  }
 }
 
 .grid-cell:hover {
@@ -286,22 +318,6 @@
 .word-list ul {
   list-style: none;
   padding: 0;
-}
-
-.word-list li {
-  margin: 20px 0;
-  font-size: 1.4rem;
-  letter-spacing: 2px;
-  font-weight: 500;
-  color: #2c3e50;
-  padding: 20px;
-  border-radius: 12px;
-  background: #f8f9fa;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
 }
 
 .word-list li span.points {

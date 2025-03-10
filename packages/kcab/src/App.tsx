@@ -11,13 +11,9 @@ const gameConfig: GameConfig = {
   subtitle: "Search one word that defines the advantage of KCAB® over other PPIs",
   words: [
     "FASTACTING",
-    "SUSTAINEDEFFECTS",
     "THIRTYMINUTES",
-    "BETTERCHOICE",
     "GERD",
-    "NERD",
     "PEPTICULCER",
-    "HPYLORI",
     "KCAB"
   ],
   theme: {
@@ -44,7 +40,7 @@ const App: React.FC = () => {
       const newFoundWords = [...foundWords, word];
       setFoundWords(newFoundWords);
       setFoundPatterns((prev) => ({ ...prev, [word]: "Found!" }));
-      setScore((prevScore) => prevScore + word.length * 10);
+      setScore((prevScore) => prevScore + 50);
 
       // Check if all words are found
       if (newFoundWords.length === words.length) {
@@ -76,7 +72,8 @@ const App: React.FC = () => {
             {words.map((word) => (
               <li key={word} className={foundWords.includes(word) ? "found" : ""}>
                 {word}
-                <span className="points">{`(${word.length * 10} pts)`}</span>
+                {/* <span className="points">{`(${word.length * 10} pts)`}</span> */}
+                <span className="points">{`(50 pts)`}</span>
               </li>
             ))}
           </ul>

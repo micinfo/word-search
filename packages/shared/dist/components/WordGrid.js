@@ -25,7 +25,7 @@ import "react-toastify/dist/ReactToastify.css";
 // Add new state variables in the component
 var WordGrid = function (_a) {
     var words = _a.words, onWordFound = _a.onWordFound, hintedWord = _a.hintedWord;
-    var gridSize = 25; // Increased grid size to match the K-CAB puzzle
+    var gridSize = 15; // Increased grid size to match the K-CAB puzzle
     var _b = useState(createEmptyGrid()), grid = _b[0], setGrid = _b[1];
     var _c = useState([]), selection = _c[0], setSelection = _c[1];
     var _d = useState([]), foundPositions = _d[0], setFoundPositions = _d[1];

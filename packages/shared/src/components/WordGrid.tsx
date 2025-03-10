@@ -28,7 +28,7 @@ interface Timer {
 
 // Add new state variables in the component
 const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) => {
-  const gridSize = 25; // Increased grid size to match the K-CAB puzzle
+  const gridSize = 15; // Increased grid size to match the K-CAB puzzle
   
   const [grid, setGrid] = useState<Cell[][]>(createEmptyGrid());
   const [selection, setSelection] = useState<Position[]>([]);
