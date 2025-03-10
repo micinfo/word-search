@@ -229,11 +229,7 @@ var WordGrid = function (_a) {
             }
         }
     };
-    return (_jsxs("div", __assign({ className: "word-grid" }, { children: [_jsx(ToastContainer, {}), showFinalCelebration && (_jsxs("div", __assign({ className: "final-celebration-overlay" }, { children: [_jsxs("div", __assign({ className: "final-celebration-content" }, { children: [_jsx("h2", { children: "\uD83C\uDF89 Congratulations! \uD83C\uDF89" }), _jsx("p", { children: "You've found all the words!" }), _jsxs("div", __assign({ className: "final-score" }, { children: ["Final Score: ", words.length * 100] })), _jsx("button", __assign({ onClick: function () { return setShowFinalCelebration(false); } }, { children: "Close" }))] })), __spreadArray([], Array(50), true).map(function (_, i) { return (_jsx("div", { className: "confetti", style: {
-                            left: "".concat(Math.random() * 100, "%"),
-                            animationDelay: "".concat(Math.random() * 2, "s"),
-                            backgroundColor: "hsl(".concat(Math.random() * 360, ", 70%, 50%)"),
-                        } }, i)); })] }))), showCelebration && (_jsxs("div", __assign({ className: "celebration-overlay" }, { children: [_jsxs("div", __assign({ className: "celebration-text" }, { children: ["Congratulations!", _jsx("br", {}), "You found all words!"] })), __spreadArray([], Array(50), true).map(function (_, i) { return (_jsx("div", { className: "confetti", style: {
+    return (_jsxs("div", __assign({ className: "word-grid" }, { children: [_jsx(ToastContainer, {}), showCelebration && (_jsxs("div", __assign({ className: "celebration-overlay" }, { children: [_jsxs("div", __assign({ className: "celebration-text" }, { children: ["Congratulations!", _jsx("br", {}), "You found all words!"] })), __spreadArray([], Array(50), true).map(function (_, i) { return (_jsx("div", { className: "confetti", style: {
                             left: "".concat(Math.random() * 100, "%"),
                             backgroundColor: "hsl(".concat(Math.random() * 360, ", 70%, 50%)"),
                             animationDelay: "".concat(Math.random() * 2, "s"),

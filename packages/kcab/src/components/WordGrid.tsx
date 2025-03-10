@@ -252,27 +252,6 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
   return (
     <div className="word-grid">
       <ToastContainer />
-      {showFinalCelebration && (
-        <div className="final-celebration-overlay">
-          <div className="final-celebration-content">
-            <h2>🎉 Congratulations! 🎉</h2>
-            <p>You've found all the words!</p>
-            <div className="final-score">Final Score: {words.length * 100}</div>
-            <button onClick={() => setShowFinalCelebration(false)}>Close</button>
-          </div>
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="confetti"
-              style={{
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-                backgroundColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
-              }}
-            />
-          ))}
-        </div>
-      )}
       {showCelebration && (
         <div className="celebration-overlay">
           <div className="celebration-text">
