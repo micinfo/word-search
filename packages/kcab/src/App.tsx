@@ -11,8 +11,13 @@ const gameConfig: GameConfig = {
   subtitle: "Search one word that defines the advantage of KCAB® over other PPIs",
   words: [
     "FASTACTING",
-    "SUSTAINED",
-    "EFFECTS",
+    "SUSTAINEDEFFECTS",
+    "THIRTYMINUTES",
+    "BETTERCHOICE",
+    "GERD",
+    "NERD",
+    "PEPTICULCER",
+    "HPYLORI",
     "KCAB"
   ],
   theme: {
@@ -60,7 +65,7 @@ const App: React.FC = () => {
 
       <div className="game-stats">
         <div className="score-display">Score: {score}</div>
-        <div className="progress">Found: {foundWords.length}/4</div>
+        <div className="progress">Found: {foundWords.length}/{words.length}</div>
       </div>
 
       <div className="game-container">

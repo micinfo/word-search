@@ -1,7 +1,6 @@
 {
-    "name": "levopront-word-search",
-    "buildCommand": "cd ../.. && npm install && npm run build:levopront",
-    "outputDirectory": "packages/levopront/build",
-    "installCommand": "npm install",
-    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-  }
+  "buildCommand": "npm install && npm run build:shared && npm run build:levopront",
+  "installCommand": "npm install",
+  "outputDirectory": "packages/levopront/build",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

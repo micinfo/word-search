@@ -25,7 +25,7 @@ import "react-toastify/dist/ReactToastify.css";
 // Add new state variables in the component
 var WordGrid = function (_a) {
     var words = _a.words, onWordFound = _a.onWordFound, hintedWord = _a.hintedWord;
-    var gridSize = 15;
+    var gridSize = 25; // Increased grid size to match the K-CAB puzzle
     var _b = useState(createEmptyGrid()), grid = _b[0], setGrid = _b[1];
     var _c = useState([]), selection = _c[0], setSelection = _c[1];
     var _d = useState([]), foundPositions = _d[0], setFoundPositions = _d[1];
@@ -46,17 +46,12 @@ var WordGrid = function (_a) {
             }); });
         });
     }
+    // Update directions to only include horizontal, vertical, and diagonal
     var directions = [
         [1, 0],
         [0, 1],
-        [1, 1],
-        [-1, 1],
-        [-1, 0],
-        [0, -1],
-        [-1, -1],
-        [1, -1],
+        [1, 1], // diagonal down-right
     ];
-    // Update useEffect for grid initialization
     useEffect(function () {
         var createGrid = function () {
             var attempts = 0;
@@ -64,22 +59,19 @@ var WordGrid = function (_a) {
             var _loop_1 = function () {
                 var newGrid_1 = createEmptyGrid();
                 var placedWords_1 = [];
-                // Process and shuffle words
-                var processedWords = __spreadArray([], words, true).map(function (word) { return ({
+                // Process words in a consistent order
+                var processedWords = __spreadArray([], words, true).sort(function (a, b) { return b.length - a.length; })
+                    .map(function (word) { return ({
                     original: word,
-                    processed: word.replace(/[^A-Za-z]/g, "").toUpperCase(),
-                }); })
-                    .sort(function () { return Math.random() - 0.5; })
-                    .sort(function (a, b) { return b.processed.length - a.processed.length; });
+                    processed: word.replace(/[^A-Za-z]/g, "").toUpperCase()
+                }); });
                 var allWordsPlaced = true;
                 var _loop_2 = function (wordIndex) {
-                    var _a = processedWords[wordIndex], word = _a.processed, original = _a.original;
+                    var word = processedWords[wordIndex].processed;
                     var isPlaced = false;
-                    // Shuffle directions for each word
-                    var shuffledDirections = __spreadArray([], directions, true).sort(function () { return Math.random() - 0.5; });
-                    // Try each direction
-                    for (var _i = 0, shuffledDirections_1 = shuffledDirections; _i < shuffledDirections_1.length; _i++) {
-                        var _b = shuffledDirections_1[_i], dx = _b[0], dy = _b[1];
+                    // Try each direction in sequence (no random shuffling)
+                    for (var _i = 0, directions_1 = directions; _i < directions_1.length; _i++) {
+                        var _a = directions_1[_i], dx = _a[0], dy = _a[1];
                         if (isPlaced)
                             break;
                         // Calculate valid range for this word
@@ -121,7 +113,7 @@ var WordGrid = function (_a) {
                                         };
                                     });
                                     isPlaced = true;
-                                    placedWords_1.push(original);
+                                    placedWords_1.push(processedWords[wordIndex].original);
                                 }
                             }
                         }
@@ -131,14 +123,14 @@ var WordGrid = function (_a) {
                         return "break";
                     }
                 };
-                // Try to place each word
+                // Try to place each word with more consistent spacing
                 for (var wordIndex = 0; wordIndex < processedWords.length; wordIndex++) {
                     var state_2 = _loop_2(wordIndex);
                     if (state_2 === "break")
                         break;
                 }
                 if (allWordsPlaced) {
-                    // Fill remaining cells
+                    // Fill remaining cells with random letters
                     for (var y = 0; y < gridSize; y++) {
                         for (var x = 0; x < gridSize; x++) {
                             if (!newGrid_1[y][x].letter) {
@@ -146,9 +138,6 @@ var WordGrid = function (_a) {
                             }
                         }
                     }
-                    setPlacedWords(placedWords_1);
-                    // Store the initial grid state
-                    setInitializedGrid(JSON.parse(JSON.stringify(newGrid_1)));
                     return { value: newGrid_1 };
                 }
                 attempts++;
@@ -162,6 +151,7 @@ var WordGrid = function (_a) {
         };
         var newGrid = createGrid();
         setGrid(newGrid);
+        setInitializedGrid(JSON.parse(JSON.stringify(newGrid)));
     }, [words]);
     // Add this new useEffect to handle found words
     useEffect(function () {
@@ -181,13 +171,40 @@ var WordGrid = function (_a) {
     // Add state for celebration
     var _g = useState(false), showCelebration = _g[0], setShowCelebration = _g[1];
     var _h = useState(false), showFinalCelebration = _h[0], setShowFinalCelebration = _h[1];
+    var isValidDirection = function (start, end) {
+        var dx = end.col - start.col;
+        var dy = end.row - start.row;
+        // Check if movement is horizontal, vertical, or diagonal
+        return (dx === 0 || // vertical
+            dy === 0 || // horizontal
+            Math.abs(dx) === Math.abs(dy) // diagonal
+        );
+    };
+    var getPositionsInLine = function (start, end) {
+        var positions = [];
+        var dx = Math.sign(end.col - start.col);
+        var dy = Math.sign(end.row - start.row);
+        var current = __assign({}, start);
+        while (current.row !== end.row || current.col !== end.col) {
+            positions.push(__assign({}, current));
+            current.row += dy;
+            current.col += dx;
+        }
+        positions.push(end);
+        return positions;
+    };
     var handleCellClick = function (rowIndex, colIndex) {
-        var isAlreadySelected = selection.some(function (pos) { return pos.row === rowIndex && pos.col === colIndex; });
-        if (isAlreadySelected) {
+        if (selection.length === 0) {
+            setSelection([{ row: rowIndex, col: colIndex }]);
+            return;
+        }
+        var start = selection[0];
+        var end = { row: rowIndex, col: colIndex };
+        if (!isValidDirection(start, end)) {
             setSelection([]);
             return;
         }
-        var newSelection = __spreadArray(__spreadArray([], selection, true), [{ row: rowIndex, col: colIndex }], false);
+        var newSelection = getPositionsInLine(start, end);
         setSelection(newSelection);
         var selectedWord = newSelection
             .map(function (pos) { return grid[pos.row][pos.col].letter; })

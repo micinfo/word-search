@@ -1,7 +1,7 @@
 {
-    "name": "levopront-word-search",
-    "buildCommand": "cd ../.. && npm install && npm run build:levopront",
-    "outputDirectory": "packages/levopront/build",
-    "installCommand": "npm install",
+    "name": "kcab-word-search",
+    "buildCommand": "cd ../.. && npm install && npm run build:shared && cd packages/kcab && npm run build",
+    "installCommand": "cd ../.. && npm install",
+    "outputDirectory": "build",
     "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-  }
+}
