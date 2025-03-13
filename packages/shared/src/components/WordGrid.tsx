@@ -55,8 +55,13 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
   // Update directions to only include horizontal, vertical, and diagonal
   const directions = [
     [1, 0],   // horizontal right
+    [-1, 0],  // horizontal left
     [0, 1],   // vertical down
+    [0, -1],  // vertical up
     [1, 1],   // diagonal down-right
+    [-1, 1],  // diagonal down-left
+    [1, -1],  // diagonal up-right
+    [-1, -1], // diagonal up-left
   ];
 
   useEffect(() => {
@@ -68,74 +73,88 @@ const WordGrid: React.FC<WordGridProps> = ({ words, onWordFound, hintedWord }) =
         const newGrid = createEmptyGrid();
         const placedWords: string[] = [];
 
-        // Process words in a consistent order
+        // Shuffle directions array for each attempt
+        const shuffledDirections = [...directions].sort(() => Math.random() - 0.5);
+
+        // Process words in random order while maintaining size sorting
         const processedWords = [...words]
           .sort((a, b) => b.length - a.length)
           .map(word => ({
             original: word,
             processed: word.replace(/[^A-Za-z]/g, "").toUpperCase()
-          }));
+          }))
+          .sort((a, b) => Math.random() - 0.5);
 
         let allWordsPlaced = true;
 
-        // Try to place each word with more consistent spacing
         for (let wordIndex = 0; wordIndex < processedWords.length; wordIndex++) {
           const { processed: word } = processedWords[wordIndex];
           let isPlaced = false;
 
-          // Try each direction in sequence (no random shuffling)
-          for (const [dx, dy] of directions) {
+          // Randomize starting positions
+          const positions = Array.from({ length: gridSize * gridSize }, (_, i) => ({
+            x: i % gridSize,
+            y: Math.floor(i / gridSize)
+          })).sort(() => Math.random() - 0.5);
+
+          // Try each direction with random starting positions
+          for (const [dx, dy] of shuffledDirections) {
             if (isPlaced) break;
 
-            // Calculate valid range for this word
-            const maxX =
-              dx === 0 ? gridSize : dx > 0 ? gridSize - word.length : gridSize;
-            const maxY =
-              dy === 0 ? gridSize : dy > 0 ? gridSize - word.length : gridSize;
-            const minX = dx < 0 ? word.length - 1 : 0;
-            const minY = dy < 0 ? word.length - 1 : 0;
+            for (const pos of positions) {
+              if (isPlaced) break;
 
-            // Try each position
-            for (let y = minY; y < maxY && !isPlaced; y++) {
-              for (let x = minX; x < maxX && !isPlaced; x++) {
-                let canPlace = true;
-                const positions: [number, number][] = [];
+              const { x, y } = pos;
+              // Calculate valid range for this word
+              const maxX =
+                dx === 0 ? gridSize : dx > 0 ? gridSize - word.length : gridSize;
+              const maxY =
+                dy === 0 ? gridSize : dy > 0 ? gridSize - word.length : gridSize;
+              const minX = dx < 0 ? word.length - 1 : 0;
+              const minY = dy < 0 ? word.length - 1 : 0;
 
-                // Check if word fits
-                for (let i = 0; i < word.length && canPlace; i++) {
-                  const newX = x + dx * i;
-                  const newY = y + dy * i;
+              // Try each position
+              for (let y = minY; y < maxY && !isPlaced; y++) {
+                for (let x = minX; x < maxX && !isPlaced; x++) {
+                  let canPlace = true;
+                  const positions: [number, number][] = [];
 
-                  if (
-                    newX < 0 ||
-                    newX >= gridSize ||
-                    newY < 0 ||
-                    newY >= gridSize
-                  ) {
-                    canPlace = false;
-                    break;
+                  // Check if word fits
+                  for (let i = 0; i < word.length && canPlace; i++) {
+                    const newX = x + dx * i;
+                    const newY = y + dy * i;
+
+                    if (
+                      newX < 0 ||
+                      newX >= gridSize ||
+                      newY < 0 ||
+                      newY >= gridSize
+                    ) {
+                      canPlace = false;
+                      break;
+                    }
+
+                    const currentCell = newGrid[newY][newX];
+                    if (currentCell.letter && currentCell.letter !== word[i]) {
+                      canPlace = false;
+                      break;
+                    }
+
+                    positions.push([newX, newY]);
                   }
 
-                  const currentCell = newGrid[newY][newX];
-                  if (currentCell.letter && currentCell.letter !== word[i]) {
-                    canPlace = false;
-                    break;
+                  if (canPlace && positions.length === word.length) {
+                    positions.forEach(([posX, posY], i) => {
+                      newGrid[posY][posX] = {
+                        letter: word[i],
+                        selected: false,
+                        isPartOfHint: false,
+                        wordIndex: wordIndex,
+                      };
+                    });
+                    isPlaced = true;
+                    placedWords.push(processedWords[wordIndex].original);
                   }
-
-                  positions.push([newX, newY]);
-                }
-
-                if (canPlace && positions.length === word.length) {
-                  positions.forEach(([posX, posY], i) => {
-                    newGrid[posY][posX] = {
-                      letter: word[i],
-                      selected: false,
-                      isPartOfHint: false,
-                      wordIndex: wordIndex,
-                    };
-                  });
-                  isPlaced = true;
-                  placedWords.push(processedWords[wordIndex].original);
                 }
               }
             }

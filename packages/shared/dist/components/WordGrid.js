@@ -49,8 +49,13 @@ var WordGrid = function (_a) {
     // Update directions to only include horizontal, vertical, and diagonal
     var directions = [
         [1, 0],
+        [-1, 0],
         [0, 1],
-        [1, 1], // diagonal down-right
+        [0, -1],
+        [1, 1],
+        [-1, 1],
+        [1, -1],
+        [-1, -1], // diagonal up-left
     ];
     useEffect(function () {
         var createGrid = function () {
@@ -59,61 +64,75 @@ var WordGrid = function (_a) {
             var _loop_1 = function () {
                 var newGrid_1 = createEmptyGrid();
                 var placedWords_1 = [];
-                // Process words in a consistent order
+                // Shuffle directions array for each attempt
+                var shuffledDirections = __spreadArray([], directions, true).sort(function () { return Math.random() - 0.5; });
+                // Process words in random order while maintaining size sorting
                 var processedWords = __spreadArray([], words, true).sort(function (a, b) { return b.length - a.length; })
                     .map(function (word) { return ({
                     original: word,
                     processed: word.replace(/[^A-Za-z]/g, "").toUpperCase()
-                }); });
+                }); })
+                    .sort(function (a, b) { return Math.random() - 0.5; });
                 var allWordsPlaced = true;
                 var _loop_2 = function (wordIndex) {
                     var word = processedWords[wordIndex].processed;
                     var isPlaced = false;
-                    // Try each direction in sequence (no random shuffling)
-                    for (var _i = 0, directions_1 = directions; _i < directions_1.length; _i++) {
-                        var _a = directions_1[_i], dx = _a[0], dy = _a[1];
+                    // Randomize starting positions
+                    var positions = Array.from({ length: gridSize * gridSize }, function (_, i) { return ({
+                        x: i % gridSize,
+                        y: Math.floor(i / gridSize)
+                    }); }).sort(function () { return Math.random() - 0.5; });
+                    // Try each direction with random starting positions
+                    for (var _i = 0, shuffledDirections_1 = shuffledDirections; _i < shuffledDirections_1.length; _i++) {
+                        var _a = shuffledDirections_1[_i], dx = _a[0], dy = _a[1];
                         if (isPlaced)
                             break;
-                        // Calculate valid range for this word
-                        var maxX = dx === 0 ? gridSize : dx > 0 ? gridSize - word.length : gridSize;
-                        var maxY = dy === 0 ? gridSize : dy > 0 ? gridSize - word.length : gridSize;
-                        var minX = dx < 0 ? word.length - 1 : 0;
-                        var minY = dy < 0 ? word.length - 1 : 0;
-                        // Try each position
-                        for (var y = minY; y < maxY && !isPlaced; y++) {
-                            for (var x = minX; x < maxX && !isPlaced; x++) {
-                                var canPlace = true;
-                                var positions = [];
-                                // Check if word fits
-                                for (var i = 0; i < word.length && canPlace; i++) {
-                                    var newX = x + dx * i;
-                                    var newY = y + dy * i;
-                                    if (newX < 0 ||
-                                        newX >= gridSize ||
-                                        newY < 0 ||
-                                        newY >= gridSize) {
-                                        canPlace = false;
-                                        break;
+                        for (var _b = 0, positions_1 = positions; _b < positions_1.length; _b++) {
+                            var pos = positions_1[_b];
+                            if (isPlaced)
+                                break;
+                            var x = pos.x, y = pos.y;
+                            // Calculate valid range for this word
+                            var maxX = dx === 0 ? gridSize : dx > 0 ? gridSize - word.length : gridSize;
+                            var maxY = dy === 0 ? gridSize : dy > 0 ? gridSize - word.length : gridSize;
+                            var minX = dx < 0 ? word.length - 1 : 0;
+                            var minY = dy < 0 ? word.length - 1 : 0;
+                            // Try each position
+                            for (var y_1 = minY; y_1 < maxY && !isPlaced; y_1++) {
+                                for (var x_1 = minX; x_1 < maxX && !isPlaced; x_1++) {
+                                    var canPlace = true;
+                                    var positions_2 = [];
+                                    // Check if word fits
+                                    for (var i = 0; i < word.length && canPlace; i++) {
+                                        var newX = x_1 + dx * i;
+                                        var newY = y_1 + dy * i;
+                                        if (newX < 0 ||
+                                            newX >= gridSize ||
+                                            newY < 0 ||
+                                            newY >= gridSize) {
+                                            canPlace = false;
+                                            break;
+                                        }
+                                        var currentCell = newGrid_1[newY][newX];
+                                        if (currentCell.letter && currentCell.letter !== word[i]) {
+                                            canPlace = false;
+                                            break;
+                                        }
+                                        positions_2.push([newX, newY]);
                                     }
-                                    var currentCell = newGrid_1[newY][newX];
-                                    if (currentCell.letter && currentCell.letter !== word[i]) {
-                                        canPlace = false;
-                                        break;
+                                    if (canPlace && positions_2.length === word.length) {
+                                        positions_2.forEach(function (_a, i) {
+                                            var posX = _a[0], posY = _a[1];
+                                            newGrid_1[posY][posX] = {
+                                                letter: word[i],
+                                                selected: false,
+                                                isPartOfHint: false,
+                                                wordIndex: wordIndex,
+                                            };
+                                        });
+                                        isPlaced = true;
+                                        placedWords_1.push(processedWords[wordIndex].original);
                                     }
-                                    positions.push([newX, newY]);
-                                }
-                                if (canPlace && positions.length === word.length) {
-                                    positions.forEach(function (_a, i) {
-                                        var posX = _a[0], posY = _a[1];
-                                        newGrid_1[posY][posX] = {
-                                            letter: word[i],
-                                            selected: false,
-                                            isPartOfHint: false,
-                                            wordIndex: wordIndex,
-                                        };
-                                    });
-                                    isPlaced = true;
-                                    placedWords_1.push(processedWords[wordIndex].original);
                                 }
                             }
                         }
@@ -123,7 +142,6 @@ var WordGrid = function (_a) {
                         return "break";
                     }
                 };
-                // Try to place each word with more consistent spacing
                 for (var wordIndex = 0; wordIndex < processedWords.length; wordIndex++) {
                     var state_2 = _loop_2(wordIndex);
                     if (state_2 === "break")
