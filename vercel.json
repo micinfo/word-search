@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm install && npm run build:shared && cd packages/kcab && npm run build",
+  "buildCommand": "npm install && npm run build:shared && cd packages/suganon && npm run build",
   "installCommand": "npm install",
-  "outputDirectory": "packages/kcab/build",
+  "outputDirectory": "packages/suganon/build",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

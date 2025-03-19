@@ -2,22 +2,20 @@ import React, { useState } from "react";
 import "./App.css";
 import { WordGrid, WordList, GameConfig } from "@word-search/shared";
 // @ts-ignore
-import logo from './assets/suganon-logo.png';
+import logo from "./assets/suganon-logo.png";
 
 const gameConfig: GameConfig = {
   productName: "SUGANON®",
   brandName: "SUGANON®",
   title: "SUGANON® ADVANTAGE WORD SEARCH",
-  subtitle: "Search one word that defines the advantage of Suganon® over other DPP-4 inhibitors",
-  words: [
-    "EVOADVANTAGE",
-    "EFFICACY",
-  ],
+  subtitle:
+    "Search one word that defines the advantage of Suganon® over other DPP-4 inhibitors",
+  words: ["EVOADVANTAGE", "EFFICACY", "SAFETY", "SUGANON", "EVOGLIPTIN"],
   theme: {
-    primary: '#F4A7A7',  // Salmon pink color from the image
-    secondary: '#FFFFFF',
-    accent: '#1B365D'
-  }
+    primary: "#F4A7A7", // Salmon pink color from the image
+    secondary: "#FFFFFF",
+    accent: "#1B365D",
+  },
 };
 
 const App: React.FC = () => {
@@ -58,7 +56,9 @@ const App: React.FC = () => {
 
       <div className="game-stats">
         <div className="score-display">Score: {score}</div>
-        <div className="progress">Found: {foundWords.length}/{words.length}</div>
+        <div className="progress">
+          Found: {foundWords.length}/{words.length}
+        </div>
       </div>
 
       <div className="game-container">
@@ -67,7 +67,10 @@ const App: React.FC = () => {
           <h3>Words to Find:</h3>
           <ul>
             {words.map((word) => (
-              <li key={word} className={foundWords.includes(word) ? "found" : ""}>
+              <li
+                key={word}
+                className={foundWords.includes(word) ? "found" : ""}
+              >
                 {word}
                 {/* <span className="points">{`(${word.length * 10} pts)`}</span> */}
                 <span className="points">{`(50 pts)`}</span>

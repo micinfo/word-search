@@ -1,7 +1,7 @@
 /* Base styles */
 .App {
   text-align: center;
-  background: linear-gradient(180deg, #FFF0F0 0%, #ffffff 100%);
+  background-image: url("../src/images/background-image.jpg");
   min-height: 100vh;
   padding: 2rem;
 }
@@ -61,7 +61,7 @@
 
 /* Grid styles */
 .word-grid {
-  background: #f7aaaa;
+  /* background: #f7aaaa; */
   border-radius: 15px;
   padding: 8px;
   width: 100%;
@@ -247,7 +247,7 @@
 /* Update game-container to ensure full width */
 /* Update game-container to use flex-row */
 .game-container {
-  background-color: #f7aaaa;
+  /* background-color: #f7aaaa; */
   border-radius: 15px;
   padding: 1rem;
   margin: 0 auto;
