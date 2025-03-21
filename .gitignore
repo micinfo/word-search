@@ -6,3 +6,6 @@ node_modules/
 /dist
 /build
 *.log
+packages/kcab/node_modules
+packages/levopront/node_modules
+packages/suganon/node_modules

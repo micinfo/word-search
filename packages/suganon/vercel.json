@@ -1,7 +1,6 @@
 {
-    "name": "kcab-word-search",
-    "buildCommand": "cd ../.. && npm install && npm run build:shared && cd packages/kcab && npm run build",
-    "installCommand": "cd ../.. && npm install",
-    "outputDirectory": "build",
-    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "buildCommand": "cd ../.. && npm install && npm run build:shared && cd packages/suganon && npm run build",
+  "installCommand": "cd ../.. && npm install",
+  "outputDirectory": "build",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
