@@ -4,6 +4,7 @@
   background-image: url("../src/images/background-image.jpg");
   min-height: 100vh;
   padding: 2rem;
+  background-size: cover;
 }
 
 .grid-container {
@@ -88,7 +89,6 @@
 
 @media (max-width: 768px) {
   .App {
-    padding: 10px 5px;
     width: 100%;
   }
 
@@ -252,7 +252,7 @@
   padding: 1rem;
   margin: 0 auto;
   width: 100%;
-  max-width: 1200px;
+  /* max-width: 1200px; */
   display: flex;
   flex-direction: row; /* Changed from column to row */
   gap: 2rem;
@@ -273,7 +273,7 @@
 /* Update mobile styles */
 @media (max-width: 768px) {
   .game-container {
-    flex-direction: column;
+    flex-direction: row-reverse;
     padding: 10px;
   }
 
@@ -532,9 +532,6 @@
   .App {
     padding: 5px;
     width: 100%;
-    max-width: 430px;
-    background-image: none;
-    background: linear-gradient(135deg, #6a3fb5, #9370db);
   }
 
   .game-container {
@@ -542,7 +539,7 @@
     padding: 8px;
     gap: 10px;
     margin: 5px auto;
-    width: 98%;
+    width: 100%;
   }
 
   .word-grid {
@@ -623,7 +620,7 @@
   .game-container {
     padding: 20px;
     gap: 25px;
-    width: 95%;
+    width: 100%;
   }
 
   .word-list {
