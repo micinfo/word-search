@@ -84,7 +84,7 @@ h2 {
   background: white;
   border-radius: 25px;
   position: relative;
-  transform: rotate(-2deg);
+  /* transform: rotate(-2deg); */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
