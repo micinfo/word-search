@@ -1,5 +1,6 @@
 import React from 'react';
 import MatchingGame from './components/MatchingGame';
+import './App.css';  // Add this import
 
 function App() {
   return (

@@ -1,0 +1,7 @@
+{
+    "buildCommand": "cd ../.. && npm install && npm run build:shared && cd packages/matchgame && npm run build",
+    "installCommand": "cd ../.. && npm install",
+    "outputDirectory": "build",
+    "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  }
+  

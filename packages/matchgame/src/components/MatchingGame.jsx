@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { TouchBackend } from "react-dnd-touch-backend";
 import "../styles/MatchingGame.css";
 
 const ProductCard = ({ product, isMatched, onMatch }) => {
@@ -51,6 +52,10 @@ const TypeCard = ({ type, isMatched, onMatch, matchedProduct }) => {
 };
 
 const MatchingGame = () => {
+  const isMobile = /mobile|android|ios/i.test(navigator.userAgent);
+  console.log(isMobile);
+  // Fix: Use TouchBackend directly without calling it as a function
+  const backend = isMobile ? TouchBackend : HTML5Backend;
   const [matches, setMatches] = useState([]);
   const [showCongrats, setShowCongrats] = useState(false);
 
@@ -80,8 +85,8 @@ const MatchingGame = () => {
   ].sort(() => Math.random() - 0.5); // Randomize types order
 
   const getMatchedProduct = (typeId) => {
-    return matches.includes(typeId) 
-      ? products.find((p) => p.id === typeId) 
+    return matches.includes(typeId)
+      ? products.find((p) => p.id === typeId)
       : null;
   };
 
@@ -89,7 +94,7 @@ const MatchingGame = () => {
     if (productId === typeId && !matches.includes(productId)) {
       const newMatches = [...matches, productId];
       setMatches(newMatches);
-      
+
       if (newMatches.length === products.length) {
         setShowCongrats(true);
       }
@@ -97,7 +102,7 @@ const MatchingGame = () => {
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={backend}>
       <div className="matching-game">
         <h1>CONNECT THE PRODUCT</h1>
         <h2>Match Bawat Pinay products with its corresponding types!</h2>
@@ -129,13 +134,15 @@ const MatchingGame = () => {
             ))}
           </div>
         </div>
-        
+
         {showCongrats && (
           <div className="congrats-overlay">
             <div className="congrats-modal">
               <h2>Congratulations! 🎉</h2>
               <p>You've successfully matched all the products!</p>
-              <button onClick={() => window.location.reload()}>Play Again</button>
+              <button onClick={() => window.location.reload()}>
+                Play Again
+              </button>
             </div>
           </div>
         )}
