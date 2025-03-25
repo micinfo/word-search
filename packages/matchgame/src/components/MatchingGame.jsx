@@ -3,6 +3,7 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import "../styles/MatchingGame.css";
+import matchGameLogo from "../images/matchgamelogo.jpg";
 
 const ProductCard = ({ product, isMatched, onMatch }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -70,14 +71,14 @@ const MatchingGame = () => {
   const types = [
     {
       id: 1,
-      name: "You got it all with the doctor-prescribed inositol for PCOS",
+      name: "You got it All with the doctor-prescribed inositol for PCOS",
     },
     {
       id: 2,
-      name: "Everything is on Priming from the first and only clinically-proven Prom Rose Oil",
+      name: "Everything is on Priming from the first and only clinically-proven Primrose Oil",
     },
-    { id: 3, name: "The Pre and Post Natal Vitamins with the plus Benefits" },
-    { id: 4, name: "No more lack of flow fro Breastfeeding Moms" },
+    { id: 3, name: "The Pre and Post Natal Vitamins with the PLUS Benefits" },
+    { id: 4, name: "No more lack of flow for Breastfeeding Moms" },
     {
       id: 5,
       name: "Iron Up and Stay Fab with the Triple Combination Supplement for Anemia",
@@ -104,8 +105,15 @@ const MatchingGame = () => {
   return (
     <DndProvider backend={backend}>
       <div className="matching-game">
-        <h1>CONNECT THE PRODUCT</h1>
-        <h2>Match Bawat Pinay products with its corresponding types!</h2>
+        <img src={matchGameLogo} alt="Game Logo" className="game-logo" />
+        <h1>MATCH THE PRODUCT</h1>
+        <h2>
+          Metro Pharma Philippines Inc. empowers every woman in every journey of
+          womanhood by nourishing them with the right supplements.
+          <br />
+          <br />
+          Match the product with the corresponding benefits and indication.
+        </h2>
 
         <div className="game-container">
           <div className="products-container">
