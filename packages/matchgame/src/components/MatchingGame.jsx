@@ -1,55 +1,10 @@
 import React, { useState } from "react";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import matchGameLogo from "../images/matchgamelogo.jpg";
-
-const ProductCard = ({ product, isMatched, onMatch }) => {
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: "product",
-    item: { id: product.id },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-    canDrag: !isMatched,
-  }));
-
-  return (
-    <div
-      ref={drag}
-      className={`product ${isMatched ? "matched" : ""} ${
-        isDragging ? "dragging" : ""
-      }`}
-    >
-      <img src={product.image} alt={product.name} />
-    </div>
-  );
-};
-
-const TypeCard = ({ type, isMatched, onMatch, matchedProduct }) => {
-  const [{ isOver }, drop] = useDrop({
-    accept: "product",
-    drop: (item) => onMatch(item.id, type.id),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-    canDrop: () => !isMatched,
-  });
-
-  return (
-    <div
-      ref={drop}
-      className={`type ${isMatched ? "matched" : ""} ${
-        isOver ? "droppable" : ""
-      }`}
-    >
-      {matchedProduct && (
-        <img src={matchedProduct.image} alt={matchedProduct.name} />
-      )}
-      {type.name}
-    </div>
-  );
-};
+import ProductCard from './ProductCard';
+import TypeCard from './TypeCard';
 
 const MatchingGame = () => {
   const isMobile = /mobile|android|ios/i.test(navigator.userAgent);

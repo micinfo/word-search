@@ -13,6 +13,6 @@
     "build:shared": "cd packages/shared && npm run build",
     "build:kcab": "npm run build:shared && cd packages/kcab && npm run build",
     "build:suganon": "npm run build:shared && cd packages/suganon && npm run build",
-    "build:matchgame": "npm run build:shared && cd packages/matchgame && npm run build"
+    "build:matchgame": "cd packages/matchgame && npm run build"
   }
 }
