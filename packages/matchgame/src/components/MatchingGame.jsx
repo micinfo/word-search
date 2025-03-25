@@ -65,7 +65,7 @@ const MatchingGame = () => {
     { id: 2, name: "Eveprim", image: "/images/eveprim.jpg" },
     { id: 3, name: "Natal Plus", image: "/images/natalplus.jpg" },
     { id: 4, name: "Lacta Flow", image: "/images/lactaflow.jpg" },
-    { id: 5, name: "Treviron", image: "/images/treviron.jpg" },
+    { id: 5, name: "Treviron", image: "/images/treviron.png" },
   ].sort(() => Math.random() - 0.5); // Randomize products order
 
   const types = [
