@@ -1,12 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.258f2a36.css",
-    "main.js": "/static/js/main.5c65f57d.js",
-    "static/media/kcab-logo.png": "/static/media/kcab-logo.5fe439c9dad739025c41.png",
+    "main.css": "/static/css/main.24d61c7e.css",
+    "main.js": "/static/js/main.099de743.js",
+    "static/media/background-image.jpg": "/static/media/background-image.6b894946e8b4aa720bb8.jpg",
+    "static/media/suganon-logo.png": "/static/media/suganon-logo.7c17623ce3ddcc4d94f9.png",
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.258f2a36.css",
-    "static/js/main.5c65f57d.js"
+    "static/css/main.24d61c7e.css",
+    "static/js/main.099de743.js"
   ]
 }

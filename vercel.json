@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm install && npm run build:shared && cd packages/suganon && npm run build",
+  "buildCommand": "npm install && npm run build:shared && cd packages/matchgame && npm run build",
   "installCommand": "npm install",
-  "outputDirectory": "packages/suganon/build",
+  "outputDirectory": "packages/matchgame/build",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
