@@ -101,6 +101,7 @@ h2 {
   align-items: center;
   background: none;
   padding: 10px;
+  cursor: grab;
 }
 
 .type img {
