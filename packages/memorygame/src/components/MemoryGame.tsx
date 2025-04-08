@@ -41,15 +41,20 @@ const MemoryGame: React.FC = () => {
   };
 
   const handleCardClick = (id: number) => {
+    // Only prevent clicking if:
+    // 1. Two cards are currently flipped
+    // 2. This specific card is already matched
+    // 3. This specific card is already flipped
     if (
       flippedCards.length === 2 ||
       cards[id].isMatched ||
       flippedCards.includes(id)
-    )
+    ) {
+      console.log("Preventing click",flippedCards.includes(id)); // Add this line for debugging purpose
       return;
-    console.log("Card clicked:", id);
+    }
+
     const newFlippedCards = [...flippedCards, id];
-    console.log("New flipped cards:", newFlippedCards);
     setFlippedCards(newFlippedCards);
     setMoves((prev) => prev + 1);
 
@@ -57,19 +62,20 @@ const MemoryGame: React.FC = () => {
       const firstCard = cards.find((card) => card.id === flippedCards[0]);
       const secondCard = cards.find((card) => card.id === id);
 
-      // Debug log to see full card objects
-      console.log("Comparing cards:", firstCard, secondCard);
-
-      // Compare only by name since that's our unique identifier
       if (firstCard?.name === secondCard?.name) {
+        // Update matched cards
         const updatedCards = cards.map((card) =>
           card.id === firstCard?.id || card.id === secondCard?.id
             ? { ...card, isMatched: true }
             : card
         );
         setCards(updatedCards);
-        setFlippedCards([]);
+        // Clear flipped cards after a short delay
+        setTimeout(() => {
+          setFlippedCards([]);
+        }, 300);
       } else {
+        // For non-matching cards, flip them back after delay
         setTimeout(() => {
           setFlippedCards([]);
         }, 1000);
@@ -80,12 +86,12 @@ const MemoryGame: React.FC = () => {
   return (
     <div className="memory-game">
       <div className="game-header">
-        <img 
-          src="/images/matchgamelogo.jpg" 
-          alt="Memory Game Logo" 
+        <img
+          src="/images/matchgamelogo.jpg"
+          alt="Memory Game Logo"
           className="game-logo"
         />
-        <h1>Sweet Memory Game</h1>
+        <h1>MPPI Memory Game</h1>
         <p>Moves: {moves}</p>
         <button onClick={initializeGame}>New Game</button>
       </div>
@@ -101,10 +107,7 @@ const MemoryGame: React.FC = () => {
             <div className="card-inner">
               <div className="card-front" />
               <div className="card-back">
-                <img
-                  src={card.content}
-                  alt={card.name}
-                />
+                <img src={card.content} alt={card.name} />
               </div>
             </div>
           </div>
