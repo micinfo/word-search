@@ -47,10 +47,10 @@ const MemoryGame: React.FC = () => {
     // 3. This specific card is already flipped
     if (
       flippedCards.length === 2 ||
-      cards[id].isMatched ||
+      cards.find((card) => card.id === id)?.isMatched ||
       flippedCards.includes(id)
     ) {
-      console.log("Preventing click",flippedCards.includes(id)); // Add this line for debugging purpose
+      console.log("Preventing click", flippedCards.length); // Add this line for debugging purpose
       return;
     }
 
