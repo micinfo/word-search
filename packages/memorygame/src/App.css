@@ -15,63 +15,68 @@ img {
 .memory-game {
   max-width: 100%;
   min-height: 100vh;
-  padding: 10px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .game-header {
   text-align: center;
-  padding: 10px;
+  margin-bottom: 30px;
 }
 
 .game-logo {
-  max-width: 150px;
+  max-width: 200px;
   height: auto;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
 .game-header h1 {
-  font-size: 1.5rem;
-  margin: 5px 0;
+  color: #2c3e50;
+  font-size: 2.2rem;
+  margin: 10px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.game-header button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.game-header button:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+.game-header p {
+  font-size: 1.2rem;
+  color: #34495e;
+  margin: 15px 0;
 }
 
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-  gap: 8px;
-  padding: 10px;
-  margin: auto;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  max-width: 800px;
   width: 100%;
-  max-width: 400px;
+  padding: 20px;
 }
 
 .card {
   aspect-ratio: 3/4;
-  width: 100%;
-}
-
-.card-back img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 5px;
-}
-
-@media (max-width: 480px) {
-  .game-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  
-  .game-header h1 {
-    font-size: 1.2rem;
-  }
-}
-
-.card {
-  aspect-ratio: 3/4;
-  cursor: pointer;
   perspective: 1000px;
+  cursor: pointer;
 }
 
 .card-inner {
@@ -81,6 +86,8 @@ img {
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .card.flipped .card-inner {
@@ -93,22 +100,59 @@ img {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .card-front {
-  background: #f0f0f0;
-  border: 2px solid #ddd;
+  background: linear-gradient(45deg, #0066b2 0%, #005999 100%);
+  border: 2px solid #ffffff30;
 }
 
 .card-back {
-  background-color: white;
+  background: white;
   transform: rotateY(180deg);
-  border: 2px solid #ddd;
+}
+
+.card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.card.matched .card-inner {
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+}
+
+@media (max-width: 768px) {
+  .game-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .game-header h1 {
+    font-size: 1.8rem;
+  }
+  .card-inner {
+    height: 55%;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .game-header h1 {
+    font-size: 1.5rem;
+  }
+  .card-inner {
+    height: 55%;
+  }
 }
 
 .emoji-content {
