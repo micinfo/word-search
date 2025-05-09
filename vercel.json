@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm install && npm run build:shared && cd packages/memorygame && npm run build",
+  "buildCommand": "npm install && npm run build:shared && cd packages/slackscheduler && npm run build",
   "installCommand": "npm install",
-  "outputDirectory": "packages/memorygame/build",
+  "outputDirectory": "packages/slackscheduler/build",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
