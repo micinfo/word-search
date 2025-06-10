@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 interface Card {
   id: number;
   content: string;
-  name: string; // Add this line to include the name property in the Card data type
+  name: string;
   isFlipped: boolean;
   isMatched: boolean;
 }
@@ -12,44 +12,33 @@ const MemoryGame: React.FC = () => {
   const [cards, setCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
+  const [currentGame, setCurrentGame] = useState(1);
+  const [showNextGamePrompt, setShowNextGamePrompt] = useState(false);
 
-  const cardContents = [
-    // { name: "Carsitol", content: "/images/carsitol.jpg" },
-    // { name: "Eveprim", content: "/images/eveprim.jpg" },
-    // { name: "Natal Plus", content: "/images/natalplus.jpg" },
-    // { name: "Lacta Flow", content: "/images/lactaflow.jpg" },
-    // { name: "Treviron", content: "/images/treviron.png" },
+  const level1Cards = [
     { name: "Adrylex", content: "/images/logos/Adrylex.png" },
-    { name: "Amzef", content: "/images/logos/Amzef.png" },
-    { name: "Carsitol_logo", content: "/images/logos/Carsitol_logo.png" },
-    { name: "Ceraklin_logo", content: "/images/logos/Ceraklin_logo.png" },
-    { name: "Cerkalin", content: "/images/logos/Cerkalin.png" },
-    { name: "Cipromet", content: "/images/logos/Cipromet.png" },
+    { name: "Ceraklin", content: "/images/logos/Ceraklin_logo.png" },
     { name: "Cortizan2", content: "/images/logos/Cortizan2.png" },
-    { name: "Cozin1mg", content: "/images/logos/Cozin1mg.png" },
-    { name: "Cozin3mg", content: "/images/logos/Cozin3mg.png" },
-    { name: "DefunginLogo", content: "/images/logos/DefunginLogo.png" },
     { name: "ErasulLogo", content: "/images/logos/ErasulLogo.png" },
-    { name: "Everprimlogo", content: "/images/logos/Everprimlogo.png" },
-    { name: "FertyLogo", content: "/images/logos/FertylLogo.png" },
-    { name: "FurifolLogo", content: "/images/logos/FurifolLogo.png" },
-    { name: "KcabLogo", content: "/images/logos/KcabLogo.png" },
-    { name: "LactaflowLogo", content: "/images/logos/LactaflowLogo.png" },
-    { name: "Levoprontlogo", content: "/images/logos/Levoprontlogo.png" },
-    { name: "Nadixa", content: "/images/logos/Nadixa.png" },
-    { name: "NatalPlusLogo", content: "/images/logos/NatalPlusLogo.png" },
-    { name: "NovasLogo", content: "/images/logos/NovasLogo.png" },
-    { name: "SuganonLogo", content: "/images/logos/SuganonLogo.png" },
     { name: "TeranexLogo", content: "/images/logos/TeranexLogo.png" },
-    { name: "TrevIronFABlogo", content: "/images/logos/TrevIronFABlogo.png" },
+    { name: "Nadixa", content: "/images/logos/Nadixa.png" },
+  ];
+
+  const level2Cards = [
+    { name: "Cozin1mg", content: "/images/logos/Cozin1mg.png" },
+    { name: "Cerkalin", content: "/images/logos/Cerkalin.png" },
+    { name: "NovasLogo", content: "/images/logos/NovasLogo.png" },
+    { name: "DefunginLogo", content: "/images/logos/DefunginLogo.png" },
+    { name: "Cortizan2", content: "/images/logos/Cortizan2.png" },
   ];
 
   useEffect(() => {
     initializeGame();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentGame]);
 
   const initializeGame = () => {
-    const duplicatedCards = [...cardContents, ...cardContents]
+    const currentCards = currentGame === 1 ? level1Cards : level2Cards;
+    const duplicatedCards = [...currentCards, ...currentCards]
       .map((content, index) => ({
         id: index,
         name: content.name,
@@ -61,19 +50,36 @@ const MemoryGame: React.FC = () => {
     setCards(duplicatedCards);
     setFlippedCards([]);
     setMoves(0);
+    setShowNextGamePrompt(false);
+  };
+
+  const handleNextGame = () => {
+    setCurrentGame(2);
+    setShowNextGamePrompt(false);
+  };
+
+  const checkGameComplete = () => {
+    const allMatched = cards.every((card) => card.isMatched);
+    if (allMatched) {
+      if (currentGame === 1) {
+        setTimeout(() => {
+          setShowNextGamePrompt(true);
+        }, 500);
+      } else {
+        setTimeout(() => {
+          alert("Congratulations! You've completed all games!");
+          setCurrentGame(1);
+        }, 500);
+      }
+    }
   };
 
   const handleCardClick = (id: number) => {
-    // Only prevent clicking if:
-    // 1. Two cards are currently flipped
-    // 2. This specific card is already matched
-    // 3. This specific card is already flipped
     if (
       flippedCards.length === 2 ||
       cards.find((card) => card.id === id)?.isMatched ||
       flippedCards.includes(id)
     ) {
-      console.log("Preventing click", flippedCards.length); // Add this line for debugging purpose
       return;
     }
 
@@ -86,19 +92,32 @@ const MemoryGame: React.FC = () => {
       const secondCard = cards.find((card) => card.id === id);
 
       if (firstCard?.name === secondCard?.name) {
-        // Update matched cards
         const updatedCards = cards.map((card) =>
           card.id === firstCard?.id || card.id === secondCard?.id
             ? { ...card, isMatched: true }
             : card
         );
+        // Update cards first
         setCards(updatedCards);
-        // Clear flipped cards after a short delay
+        // Then check if all cards are matched
+        const allMatched = updatedCards.every((card) => card.isMatched);
+        if (allMatched) {
+          if (currentGame === 1) {
+            setTimeout(() => {
+              setShowNextGamePrompt(true);
+            }, 500);
+          } else {
+            setTimeout(() => {
+              alert("Congratulations! You've completed all games!");
+              setCurrentGame(1);
+            }, 500);
+          }
+        }
+        // Clear flipped cards
         setTimeout(() => {
           setFlippedCards([]);
         }, 300);
       } else {
-        // For non-matching cards, flip them back after delay
         setTimeout(() => {
           setFlippedCards([]);
         }, 1000);
@@ -109,33 +128,51 @@ const MemoryGame: React.FC = () => {
   return (
     <div className="memory-game">
       <div className="game-header">
-        <img
-          src="/images/matchgamelogo.jpg"
-          alt="Memory Game Logo"
-          className="game-logo"
-        />
-        <h1>MPPI Memory Game</h1>
+        <img src="/images/matchgamelogo.jpg" alt="Memory Game Logo" className="game-logo" />
+        <h1>MPPI Memory Game - Game {currentGame}</h1>
         <p>Moves: {moves}</p>
         <button onClick={initializeGame}>New Game</button>
       </div>
-      <div className="game-grid">
-        {cards.map((card) => (
-          <div
-            key={card.id}
-            className={`card ${
-              card.isMatched || flippedCards.includes(card.id) ? "flipped" : ""
-            } ${card.isMatched ? "matched" : ""}`}
-            onClick={() => handleCardClick(card.id)}
-          >
-            <div className="card-inner">
-              <div className="card-front" />
-              <div className="card-back">
-                <img src={card.content} alt={card.name} />
+      {showNextGamePrompt ? (
+        <div className="next-game-prompt" style={{
+          textAlign: 'center',
+          margin: '20px',
+          padding: '20px',
+          backgroundColor: '#f0f0f0',
+          borderRadius: '8px'
+        }}>
+          <h2>Congratulations! You've completed Game 1!</h2>
+          <p>Are you ready for Game 2?</p>
+          <button onClick={handleNextGame} style={{
+            padding: '10px 20px',
+            fontSize: '16px',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}>Start Game 2</button>
+        </div>
+      ) : (
+        <div className="game-grid">
+          {cards.map((card) => (
+            <div
+              key={card.id}
+              className={`card ${
+                card.isMatched || flippedCards.includes(card.id) ? "flipped" : ""
+              } ${card.isMatched ? "matched" : ""}`}
+              onClick={() => handleCardClick(card.id)}
+            >
+              <div className="card-inner">
+                <div className="card-front" />
+                <div className="card-back">
+                  <img src={card.content} alt={card.name} />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
