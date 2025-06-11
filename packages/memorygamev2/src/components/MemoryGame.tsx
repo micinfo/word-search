@@ -38,7 +38,7 @@ const MemoryGame: React.FC = () => {
 
   const initializeGame = () => {
     // const currentCards = currentGame === 1 ? level1Cards : level2Cards;
-    const currentCards = level1Cards;
+    const currentCards = level2Cards;
     const duplicatedCards = [...currentCards, ...currentCards]
       .map((content, index) => ({
         id: index,
