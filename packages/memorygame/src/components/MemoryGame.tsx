@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 
 interface Card {
   id: number;
@@ -14,60 +15,34 @@ const MemoryGame: React.FC = () => {
   const [moves, setMoves] = useState(0);
   const [currentGame, setCurrentGame] = useState(1);
   const [showNextGamePrompt, setShowNextGamePrompt] = useState(false);
-  const [isSoundEnabled, setIsSoundEnabled] = useState(false);
-  const bgMusicRef = useRef<HTMLAudioElement | null>(null);
+
   const level1Cards = [
     { name: "Adrylex", content: "/images/logos/Adrylex.png" },
     { name: "Ceraklin", content: "/images/logos/Ceraklin_logo.png" },
     { name: "Cortizan2", content: "/images/logos/Cortizan2.png" },
     { name: "ErasulLogo", content: "/images/logos/ErasulLogo.png" },
     { name: "TeranexLogo", content: "/images/logos/TeranexLogo.png" },
-    { name: "Nadixa", content: "/images/logos/Nadixa.png" },
+    { name: "Ceraklinplus", content: "/images/logos/ceraklinplus.png" },
+  ];
+
+  const level2Cards = [
+    { name: "Amzef", content: "/images/logos/Amzef.png" },
+    { name: "Carsitol", content: "/images/logos/Carsitol_logo.png" },
+    { name: "Cerkalin", content: "/images/logos/Cerkalin.png" },
+    { name: "Cipromet", content: "/images/logos/Cipromet.png" },
+    { name: "Cozin1mg", content: "/images/logos/Cozin1mg.png" },
+    { name: "Cozin3mg", content: "/images/logos/Cozin3mg.png" },
+    { name: "Defungin", content: "/images/logos/DefunginLogo.png" },
+    { name: "Everprim", content: "/images/logos/Everprimlogo.png" },
+    { name: "Ceraklinplus", content: "/images/logos/ceraklinplus.png" },
   ];
 
   useEffect(() => {
-    bgMusicRef.current = new Audio("/sounds/background-music.wav");
-    if (bgMusicRef.current) {
-      bgMusicRef.current.loop = true;
-    }
-    return () => {
-      if (bgMusicRef.current) {
-        bgMusicRef.current.pause();
-        bgMusicRef.current.currentTime = 0;
-      }
-    };
-  }, []);
-
-  const toggleSound = () => {
-    if (!bgMusicRef.current) return;
-
-    if (isSoundEnabled) {
-      bgMusicRef.current.pause();
-      bgMusicRef.current.currentTime = 0;
-    } else {
-      bgMusicRef.current.play().catch(() => {
-        // Handle any autoplay errors silently
-      });
-    }
-    setIsSoundEnabled(!isSoundEnabled);
-  };
-
-  const playSound = (soundFile: string) => {
-    if (!isSoundEnabled) return;
-
-    try {
-      const audio = new Audio(soundFile);
-      audio.play().catch(() => {
-        // Handle any play errors silently
-      });
-    } catch (error) {
-      // Handle any audio creation errors silently
-    }
-  };
+    initializeGame();
+  }, [currentGame]);
 
   const initializeGame = () => {
-    // const currentCards = currentGame === 1 ? level1Cards : level2Cards;
-    const currentCards = level1Cards;
+    const currentCards = currentGame === 1 ? level1Cards : level2Cards;
     const duplicatedCards = [...currentCards, ...currentCards]
       .map((content, index) => ({
         id: index,
@@ -112,7 +87,7 @@ const MemoryGame: React.FC = () => {
     ) {
       return;
     }
-    playSound("/sounds/card-flip.wav");
+
     const newFlippedCards = [...flippedCards, id];
     setFlippedCards(newFlippedCards);
     setMoves((prev) => prev + 1);
@@ -125,27 +100,12 @@ const MemoryGame: React.FC = () => {
         const updatedCards = cards.map((card) =>
           card.id === firstCard?.id || card.id === secondCard?.id
             ? { ...card, isMatched: true }
-            : card
+            : card,
         );
-        // Update cards first
         setCards(updatedCards);
-        // Then check if all cards are matched
-        const allMatched = updatedCards.every((card) => card.isMatched);
-        if (allMatched) {
-          if (currentGame === 1) {
-            setTimeout(() => {
-              setShowNextGamePrompt(true);
-            }, 500);
-          } else {
-            setTimeout(() => {
-              alert("Congratulations! You've completed all games!");
-              setCurrentGame(1);
-            }, 500);
-          }
-        }
-        // Clear flipped cards
         setTimeout(() => {
           setFlippedCards([]);
+          checkGameComplete();
         }, 300);
       } else {
         setTimeout(() => {
@@ -163,17 +123,8 @@ const MemoryGame: React.FC = () => {
           alt="Memory Game Logo"
           className="game-logo"
         />
-        <h1>
-          MATCH PAIRS of identical brand logos by remembering their positions.
-        </h1>
-        <h2>
-          The Player with the most matched pairs at the required number moves
-          wins.
-        </h2>
+        <h1>MPPI Memory Game - Game {currentGame}</h1>
         <p>Moves: {moves}</p>
-        <button onClick={toggleSound} className="sound-button">
-          {isSoundEnabled ? "Sound: On 🔊" : "Sound: Off 🔇"}
-        </button>
         <button onClick={initializeGame}>New Game</button>
       </div>
       {showNextGamePrompt ? (
@@ -187,17 +138,22 @@ const MemoryGame: React.FC = () => {
             borderRadius: "8px",
           }}
         >
-          <h2>Congratulations! You've completed Game!</h2>
-          {/* <p>Are you ready for Game 2?</p> */}
-          {/* <button onClick={handleNextGame} style={{
-            padding: '10px 20px',
-            fontSize: '16px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}>Start Game 2</button> */}
+          <h2>Congratulations! You've completed Game 1!</h2>
+          <p>Are you ready for Game 2?</p>
+          <button
+            onClick={handleNextGame}
+            style={{
+              padding: "10px 20px",
+              fontSize: "16px",
+              backgroundColor: "#4CAF50",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Start Game 2
+          </button>
         </div>
       ) : (
         <div className="game-grid">

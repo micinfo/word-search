@@ -112,7 +112,7 @@ img {
 }
 
 .card-back {
-  background: white;
+  background: #fff;
   transform: rotateY(180deg);
 }
 
